@@ -1,0 +1,50 @@
+{
+  "name": "bluesky-filter-system",
+  "version": "1.0.0",
+  "description": "Image upload filtering and duplicate detection system for Bluesky",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "jest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.887.0",
+    "@aws-sdk/client-dynamodb": "^3.450.0",
+    "@aws-sdk/client-lambda": "^3.450.0",
+    "@aws-sdk/client-s3": "^3.450.0",
+    "@aws-sdk/credential-provider-cognito-identity": "^3.887.0",
+    "@aws-sdk/s3-presigned-post": "^3.450.0",
+    "@aws-sdk/s3-request-presigner": "^3.450.0",
+    "@aws-sdk/util-dynamodb": "^3.887.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "sharp": "^0.32.6"
+  },
+  "devDependencies": {
+    "eslint": "^8.50.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "bluesky",
+    "image",
+    "upload",
+    "filter",
+    "duplicate",
+    "detection",
+    "aws",
+    "s3",
+    "dynamodb",
+    "lambda"
+  ],
+  "author": "Bluesky Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
