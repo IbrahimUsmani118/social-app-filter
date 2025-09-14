@@ -216,6 +216,10 @@ msgstr ""
 msgid "{0}s"
 msgstr ""
 
+#: src/view/com/composer/SelectMediaButtonWithFilter.tsx:145
+msgid "{blockedCount} image(s) were blocked due to upload limits."
+msgstr ""
+
 #: src/view/shell/desktop/LeftNav.tsx:455
 msgid "{count, plural, one {# unread item} other {# unread items}}"
 msgstr ""
@@ -735,6 +739,10 @@ msgstr ""
 msgid "Add media to post"
 msgstr ""
 
+#: src/view/com/composer/SelectMediaButtonWithFilter.tsx:163
+msgid "Add media{0}"
+msgstr ""
+
 #: src/components/moderation/ReportDialog/index.tsx:403
 #: src/components/moderation/ReportDialog/index.tsx:407
 msgid "Add more details (optional)"
@@ -1150,12 +1158,12 @@ msgctxt "toast"
 msgid "Appeal submitted"
 msgstr ""
 
-#: src/screens/Takendown.tsx:111
-#: src/screens/Takendown.tsx:144
+#: src/screens/Takendown.tsx:120
+#: src/screens/Takendown.tsx:153
 msgid "Appeal suspension"
 msgstr ""
 
-#: src/screens/Takendown.tsx:114
+#: src/screens/Takendown.tsx:123
 msgid "Appeal Suspension"
 msgstr ""
 
@@ -1465,7 +1473,7 @@ msgstr ""
 msgid "Bluesky is better with friends!"
 msgstr ""
 
-#: src/screens/Takendown.tsx:217
+#: src/screens/Takendown.tsx:226
 msgid "Bluesky Social Terms of Service"
 msgstr ""
 
@@ -1621,8 +1629,8 @@ msgstr ""
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:246
 #: src/screens/Settings/components/ChangePasswordDialog.tsx:252
 #: src/screens/Settings/Settings.tsx:289
-#: src/screens/Takendown.tsx:99
-#: src/screens/Takendown.tsx:102
+#: src/screens/Takendown.tsx:108
+#: src/screens/Takendown.tsx:111
 #: src/view/com/composer/Composer.tsx:1005
 #: src/view/com/composer/Composer.tsx:1016
 #: src/view/com/composer/photos/EditImageDialog.web.tsx:43
@@ -6678,6 +6686,7 @@ msgstr ""
 
 #: src/lib/api/index.ts:60
 #: src/screens/Login/ForgotPasswordForm.tsx:149
+#: src/view/com/composer/SelectMediaButtonWithFilter.tsx:177
 msgid "Processing..."
 msgstr ""
 
@@ -6864,8 +6873,8 @@ msgstr ""
 msgid "Real people."
 msgstr ""
 
-#: src/screens/Takendown.tsx:162
-#: src/screens/Takendown.tsx:170
+#: src/screens/Takendown.tsx:171
+#: src/screens/Takendown.tsx:179
 msgid "Reason for appeal"
 msgstr ""
 
@@ -8219,14 +8228,14 @@ msgstr ""
 #: src/screens/Settings/Settings.tsx:288
 #: src/screens/SignupQueued.tsx:93
 #: src/screens/SignupQueued.tsx:96
-#: src/screens/Takendown.tsx:85
+#: src/screens/Takendown.tsx:94
 #: src/view/shell/desktop/LeftNav.tsx:212
 #: src/view/shell/desktop/LeftNav.tsx:269
 #: src/view/shell/desktop/LeftNav.tsx:272
 msgid "Sign out"
 msgstr ""
 
-#: src/screens/Takendown.tsx:88
+#: src/screens/Takendown.tsx:97
 msgid "Sign Out"
 msgstr ""
 
@@ -8462,11 +8471,11 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: src/screens/Takendown.tsx:70
+#: src/screens/Takendown.tsx:79
 msgid "Submit appeal"
 msgstr ""
 
-#: src/screens/Takendown.tsx:76
+#: src/screens/Takendown.tsx:85
 msgid "Submit Appeal"
 msgstr ""
 
@@ -9870,6 +9879,16 @@ msgstr ""
 msgid "Video is playing"
 msgstr ""
 
+#: src/view/com/composer/SelectMediaButtonWithFilter.tsx:67
+#: src/view/com/composer/SelectMediaButtonWithFilter.tsx:73
+msgid "Video must be shorter than {0} seconds"
+msgstr ""
+
+#: src/view/com/composer/SelectMediaButtonWithFilter.tsx:70
+#: src/view/com/composer/SelectMediaButtonWithFilter.tsx:76
+msgid "Video must be smaller than {0}MB"
+msgstr ""
+
 #: src/components/Post/Embed/VideoEmbed/index.web.tsx:225
 msgid "Video not found."
 msgstr ""
@@ -10270,7 +10289,7 @@ msgstr ""
 msgid "Whoops! Trending videos failed to load."
 msgstr ""
 
-#: src/screens/Takendown.tsx:173
+#: src/screens/Takendown.tsx:182
 msgid "Why are you appealing?"
 msgstr ""
 
@@ -10648,6 +10667,7 @@ msgid "You must sign in to view this post."
 msgstr ""
 
 #: src/view/com/composer/SelectMediaButton.tsx:436
+#: src/view/com/composer/SelectMediaButtonWithFilter.tsx:98
 msgid "You need to allow access to your media library."
 msgstr ""
 
@@ -10786,7 +10806,7 @@ msgstr ""
 msgid "Your account has been deleted"
 msgstr ""
 
-#: src/screens/Takendown.tsx:146
+#: src/screens/Takendown.tsx:155
 msgid "Your account has been suspended"
 msgstr ""
 
@@ -10798,11 +10818,11 @@ msgstr ""
 msgid "Your account repository, containing all public data records, can be downloaded as a \"CAR\" file. This file does not include media embeds, such as images, or your private data, which must be fetched separately."
 msgstr ""
 
-#: src/screens/Takendown.tsx:214
+#: src/screens/Takendown.tsx:223
 msgid "Your account was found to be in violation of the <0>Bluesky Social Terms of Service</0>. You have been sent an email outlining the specific violation and suspension period, if applicable. You can appeal this decision if you believe it was made in error."
 msgstr ""
 
-#: src/screens/Takendown.tsx:154
+#: src/screens/Takendown.tsx:163
 msgid "Your appeal has been submitted. If your appeal succeeds, you will receive an email."
 msgstr ""
 
