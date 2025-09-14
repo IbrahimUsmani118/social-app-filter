@@ -4,7 +4,17 @@ import {requireNativeViewManager} from 'expo-modules-core'
 
 import {GifViewProps} from './GifView.types'
 
-const NativeModule = requireNativeModule('ExpoBlueskyGifView')
+let NativeModule: any
+try {
+  NativeModule = requireNativeModule('ExpoBlueskyGifView')
+} catch (error) {
+  console.warn('ExpoBlueskyGifView native module not available, using mock')
+  NativeModule = {
+    pause: () => {},
+    resume: () => {},
+    seekTo: () => {},
+  }
+}
 const NativeView: React.ComponentType<
   GifViewProps & {ref: React.RefObject<any>}
 > = requireNativeViewManager('ExpoBlueskyGifView')

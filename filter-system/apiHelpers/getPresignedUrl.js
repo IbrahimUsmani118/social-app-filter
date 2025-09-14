@@ -19,7 +19,7 @@ export const getPresignedUrl = async (filename, contentType, method = 'put') => 
 
     // Generate unique S3 key
     const timestamp = Date.now();
-    const fileExtension = filename.split('.').pop() || 'jpg';
+    const _fileExtension = filename.split('.').pop() || 'jpg';
     const s3Key = `images/${timestamp}_${filename}`;
 
     const response = await fetch(awsConfig.presignUrl, {

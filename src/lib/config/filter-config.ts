@@ -154,7 +154,7 @@ export function isFeatureEnabled(feature: keyof FilterSystemConfig['features']):
 }
 
 // Get filter settings for a specific user (could be extended for user-specific settings)
-export function getFilterSettingsForUser(userId: string) {
+export function getFilterSettingsForUser(_userId: string) {
   return {
     maxUploads: filterConfig.filter.maxUploads,
     enableDuplicateDetection: filterConfig.filter.enableDuplicateDetection,

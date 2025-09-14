@@ -10,7 +10,15 @@ const NativeView: React.ComponentType<{
   style: StyleProp<ViewStyle>
 }> = requireNativeViewManager('ExpoBlueskyVisibilityView')
 
-const NativeModule = requireNativeModule('ExpoBlueskyVisibilityView')
+let NativeModule: any
+try {
+  NativeModule = requireNativeModule('ExpoBlueskyVisibilityView')
+} catch (error) {
+  console.warn('ExpoBlueskyVisibilityView native module not available, using mock')
+  NativeModule = {
+    updateActiveViewAsync: async () => {},
+  }
+}
 
 export async function updateActiveViewAsync() {
   await NativeModule.updateActiveViewAsync()

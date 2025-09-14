@@ -37,6 +37,17 @@ export function FABInner({testID, icon, onPress, style, ...props}: FABProps) {
     ? {right: 50, bottom: 50}
     : {right: 24, bottom: clamp(insets.bottom, 15, 60) + 15}
 
+  const handlePress = (evt: any) => {
+    console.log('FAB handlePress called!', { testID, onPress: !!onPress, evt })
+    if (onPress) {
+      console.log('FAB calling onPress callback')
+      onPress(evt)
+    } else {
+      console.log('FAB onPress is null/undefined')
+    }
+    playHaptic('Light')
+  }
+
   return (
     <Animated.View
       style={[
@@ -48,11 +59,9 @@ export function FABInner({testID, icon, onPress, style, ...props}: FABProps) {
       <PressableScale
         testID={testID}
         onPressIn={ios(() => playHaptic('Light'))}
-        onPress={evt => {
-          onPress?.(evt)
-          playHaptic('Light')
-        }}
+        onPress={handlePress}
         onLongPress={ios((evt: any) => {
+          console.log('FAB long pressed!', { testID, onPress: !!onPress })
           onPress?.(evt)
           playHaptic('Heavy')
         })}

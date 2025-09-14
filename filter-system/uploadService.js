@@ -12,7 +12,7 @@ console.log('🔧 [uploadService] Configuration:', {
 
 const MAX_DIRECT_BYTES = 10 * 1024 * 1024; // 10MB
 
-async function shouldUsePresigned(uri) {
+async function _shouldUsePresigned(uri) {
   const { size } = await FileSystem.getInfoAsync(uri, { size: true });
   return size > MAX_DIRECT_BYTES;
 }

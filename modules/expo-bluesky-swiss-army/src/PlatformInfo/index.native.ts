@@ -3,7 +3,18 @@ import {requireNativeModule} from 'expo-modules-core'
 
 import {AudioCategory} from './types'
 
-const NativeModule = requireNativeModule('ExpoPlatformInfo')
+let NativeModule: any
+try {
+  NativeModule = requireNativeModule('ExpoPlatformInfo')
+} catch (error) {
+  // Fallback mock for development when native module isn't available
+  console.warn('ExpoPlatformInfo native module not available, using mock')
+  NativeModule = {
+    getIsReducedMotionEnabled: () => false,
+    setAudioActive: () => {},
+    setAudioCategory: () => {},
+  }
+}
 
 export function getIsReducedMotionEnabled(): boolean {
   return NativeModule.getIsReducedMotionEnabled()

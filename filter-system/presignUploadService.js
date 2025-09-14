@@ -57,7 +57,7 @@ export class PresignUploadService {
       console.log('📝 [PresignUploadService] Generated filename:', filename);
 
       // Get presigned URL using the new standardized implementation
-      const { method, uploadUrl, uploadFields, s3Key } = await getPresignedUrl(filename, imageFile.type);
+      const { method, uploadUrl, _uploadFields, s3Key } = await getPresignedUrl(filename, imageFile.type);
       
       console.log('🔑 [PresignUploadService] Got presigned URL:', {
         method,

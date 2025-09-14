@@ -1,4 +1,4 @@
-import Constants from 'expo-constants';
+import _Constants from 'expo-constants';
 import { getPresignedUrl as getPresignedUrlFromHelper } from '../apiHelpers/getPresignedUrl';
 
 /**
@@ -8,7 +8,7 @@ import { getPresignedUrl as getPresignedUrlFromHelper } from '../apiHelpers/getP
  * @param {string} apiUrl - The API URL to use for getting the presigned URL (optional, uses default from awsConfig)
  * @returns {Promise<{method: string, uploadUrl: string, uploadFields: object, s3Key: string}>} The presigned URL response
  */
-export const getPresignedUrl = async (filename, contentType, apiUrl) => {
+export const getPresignedUrl = async (filename, contentType, _apiUrl) => {
   try {
     console.log('🔗 [presignService] Getting presigned URL for:', { filename, contentType });
     

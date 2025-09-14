@@ -23,10 +23,29 @@ module.exports = async function (env, argv) {
   config = withAlias(config, {
     'react-native$': 'react-native-web',
     'react-native-webview': 'react-native-web-webview',
+    // Mock react-native-uitextview for web builds since it's iOS-only
+    'react-native-uitextview': require.resolve('./__mocks__/react-native-uitextview.js'),
   })
   config.module.rules = [
     ...(config.module.rules || []),
     reactNativeWebWebviewConfiguration,
+    // Suppress source map warnings for packages with missing source files
+    {
+      test: /\.js$/,
+      enforce: 'pre',
+      use: ['source-map-loader'],
+      exclude: [
+        /node_modules\/react-native-root-siblings/,
+        /node_modules\/react-native-uitextview/,
+        /node_modules\/.*\.js$/
+      ]
+    }
+  ]
+  
+  // Add ignore patterns for webpack warnings
+  config.ignoreWarnings = [
+    /Failed to parse source map/,
+    /requireNativeComponent.*was not found/
   ]
   if (env.mode === 'development') {
     config.plugins.push(new ReactRefreshWebpackPlugin())

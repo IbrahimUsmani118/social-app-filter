@@ -1,12 +1,12 @@
 // Simplified AWS utilities for Node.js (without Expo dependencies)
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { DynamoDBClient, PutItemCommand, GetItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
-import { CognitoIdentityProviderClient, InitiateAuthCommand, SignUpCommand } from '@aws-sdk/client-cognito-identity-provider';
-import { fromCognitoIdentityPool } from '@aws-sdk/credential-provider-cognito-identity';
-import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
+import { CognitoIdentityProviderClient as _CognitoIdentityProviderClient, InitiateAuthCommand as _InitiateAuthCommand, SignUpCommand as _SignUpCommand } from '@aws-sdk/client-cognito-identity-provider';
+import { fromCognitoIdentityPool as _fromCognitoIdentityPool } from '@aws-sdk/credential-provider-cognito-identity';
+import { marshall as _marshall, unmarshall as _unmarshall } from '@aws-sdk/util-dynamodb';
 import crypto from 'crypto';
 import fs from 'fs';
-import path from 'path';
+import _path from 'path';
 
 // Environment configuration helper
 const getEnv = (key, fallback = '') =>

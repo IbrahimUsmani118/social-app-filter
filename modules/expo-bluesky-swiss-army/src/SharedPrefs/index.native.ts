@@ -1,6 +1,22 @@
 import {requireNativeModule} from 'expo-modules-core'
 
-const NativeModule = requireNativeModule('ExpoBlueskySharedPrefs')
+let NativeModule: any
+try {
+  NativeModule = requireNativeModule('ExpoBlueskySharedPrefs')
+} catch (error) {
+  console.warn('ExpoBlueskySharedPrefs native module not available, using mock')
+  NativeModule = {
+    setValue: () => {},
+    setString: () => {},
+    removeValue: () => {},
+    getString: () => undefined,
+    getNumber: () => undefined,
+    getBool: () => undefined,
+    addToSet: () => {},
+    removeFromSet: () => {},
+    setContains: () => false,
+  }
+}
 
 export function setValue(
   key: string,

@@ -77,13 +77,16 @@ let List = React.forwardRef<ListMethods, ListProps>(
     } = useScrollHandlers()
     const scrollHandler = useAnimatedScrollHandler({
       onBeginDrag(e, ctx) {
+        'worklet'
         onBeginDragFromContext?.(e, ctx)
       },
       onEndDrag(e, ctx) {
+        'worklet'
         runOnJS(updateActiveVideoViewAsync)()
         onEndDragFromContext?.(e, ctx)
       },
       onScroll(e, ctx) {
+        'worklet'
         onScrollFromContext?.(e, ctx)
 
         const didScrollDown = e.contentOffset.y > SCROLLED_DOWN_LIMIT
@@ -101,6 +104,7 @@ let List = React.forwardRef<ListMethods, ListProps>(
       // Note: adding onMomentumBegin here makes simulator scroll
       // lag on Android. So either don't add it, or figure out why.
       onMomentumEnd(e, ctx) {
+        'worklet'
         runOnJS(updateActiveVideoViewAsync)()
         onMomentumEndFromContext?.(e, ctx)
       },

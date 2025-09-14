@@ -1,5 +1,5 @@
 // Enhanced SelectMediaButton with filter integration
-import React, {useCallback} from 'react'
+import {useCallback} from 'react'
 import {Keyboard} from 'react-native'
 import {type ImagePickerAsset} from 'expo-image-picker'
 import {msg, plural} from '@lingui/macro'
@@ -15,7 +15,7 @@ import {extractDataUriMime} from '#/lib/media/util'
 import {isNative, isWeb} from '#/platform/detection'
 import {MAX_IMAGES} from '#/view/com/composer/state/composer'
 import {atoms as a, useTheme} from '#/alf'
-import {Button} from '#/components/Button'
+import {Button, ButtonIcon, ButtonText} from '#/components/Button'
 import {useSheetWrapper} from '#/components/Dialog/sheet-wrapper'
 import {Image_Stroke2_Corner0_Rounded as ImageIcon} from '#/components/icons/Image'
 import * as toast from '#/components/Toast'
@@ -45,8 +45,8 @@ export function SelectMediaButtonWithFilter({
   const {_} = useLingui()
   const t = useTheme()
   const sheetWrapper = useSheetWrapper()
-  const requestPhotoAccessIfNeeded = usePhotoLibraryPermission()
-  const requestVideoAccessIfNeeded = useVideoLibraryPermission()
+  const {requestPhotoAccessIfNeeded} = usePhotoLibraryPermission()
+  const {requestVideoAccessIfNeeded} = useVideoLibraryPermission()
 
   const selectionCountRemaining = MAX_IMAGES - selectedAssetsCount
 
@@ -129,13 +129,13 @@ export function SelectMediaButtonWithFilter({
       onImagesProcessed={(images, blockedCount) => {
         // Convert ComposerImage back to ImagePickerAsset format
         const assets: ImagePickerAsset[] = images.map(img => ({
-          uri: img.path,
-          width: img.width,
-          height: img.height,
-          mimeType: img.mime,
+          uri: img.source.path,
+          width: img.source.width,
+          height: img.source.height,
+          mimeType: img.source.mime,
           assetId: img.source.id,
           fileName: `image_${Date.now()}.jpg`,
-          fileSize: img.size,
+          fileSize: 0, // ComposerImage doesn't have size
           type: 'image',
         }))
 
@@ -156,7 +156,7 @@ export function SelectMediaButtonWithFilter({
         toast.show(error, { type: 'error' })
       }}
     >
-      {({processImages, isProcessing}) => (
+      {({processImages: _processImages, isProcessing}) => (
         <Button
           testID="openMediaBtn"
           label={_(
@@ -173,8 +173,11 @@ export function SelectMediaButtonWithFilter({
             a.py_sm,
             t.atoms.bg_contrast_25,
           ]}
-          leftIcon={isProcessing ? undefined : ImageIcon}>
-          {isProcessing ? _(msg`Processing...`) : undefined}
+        >
+          {!isProcessing && <ButtonIcon icon={ImageIcon} />}
+          <ButtonText>
+            {isProcessing ? _(msg`Processing...`) : _(msg`Add media`)}
+          </ButtonText>
         </Button>
       )}
     </FilterIntegration>
@@ -217,7 +220,8 @@ async function processImagePickerAssets(
     processedAssets.push(asset)
   }
 
-  const type = processedAssets[0]?.type || 'image'
+  const rawType = processedAssets[0]?.type || 'image'
+  const type = rawType === 'livePhoto' || rawType === 'pairedVideo' ? 'image' : rawType as 'video' | 'image' | 'gif'
   return {
     type,
     assets: processedAssets.slice(0, selectionCountRemaining),

@@ -10,6 +10,7 @@ import Animated, {
   useReducedMotion,
   useSharedValue,
   withTiming,
+  runOnJS,
 } from 'react-native-reanimated'
 
 import {isTouchDevice} from '#/lib/browser'
@@ -34,28 +35,65 @@ export function PressableScale({
 
   const scale = useSharedValue(1)
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{scale: scale.get()}],
-  }))
+  const animatedStyle = useAnimatedStyle(() => {
+    'worklet'
+    return {
+      transform: [{scale: scale.value}],
+    }
+  })
+
+  console.log('PressableScale render:', { reducedMotion, targetScale })
+
+  const onPressInWorklet = () => {
+    'worklet'
+    console.log('PressableScale onPressIn worklet called')
+    cancelAnimation(scale)
+    scale.value = withTiming(targetScale, {duration: 100})
+  }
+
+  const onPressOutWorklet = () => {
+    'worklet'
+    console.log('PressableScale onPressOut worklet called')
+    cancelAnimation(scale)
+    scale.value = withTiming(1, {duration: 100})
+  }
+
+  const onPressInJS = (e: any) => {
+    console.log('PressableScale onPressIn called')
+    if (onPressIn) {
+      onPressIn(e)
+    }
+  }
+
+  const onPressOutJS = (e: any) => {
+    console.log('PressableScale onPressOut called')
+    if (onPressOut) {
+      onPressOut(e)
+    }
+  }
+
+  const shouldAnimate = !reducedMotion
 
   return (
     <AnimatedPressable
       accessibilityRole="button"
-      onPressIn={e => {
-        if (onPressIn) {
-          onPressIn(e)
-        }
-        cancelAnimation(scale)
-        scale.set(() => withTiming(targetScale, {duration: 100}))
+      onPressIn={(e) => {
+        console.log('AnimatedPressable onPressIn triggered')
+        onPressInWorklet()
+        runOnJS(onPressInJS)(e)
       }}
-      onPressOut={e => {
-        if (onPressOut) {
-          onPressOut(e)
-        }
-        cancelAnimation(scale)
-        scale.set(() => withTiming(1, {duration: 100}))
+      onPressOut={(e) => {
+        console.log('AnimatedPressable onPressOut triggered')
+        onPressOutWorklet()
+        runOnJS(onPressOutJS)(e)
       }}
-      style={[!reducedMotion && animatedStyle, style]}
+      onPress={(e) => {
+        console.log('AnimatedPressable onPress triggered')
+        if (rest.onPress) {
+          rest.onPress(e)
+        }
+      }}
+      style={[shouldAnimate && animatedStyle, style]}
       {...rest}>
       {children}
     </AnimatedPressable>

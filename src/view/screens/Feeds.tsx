@@ -145,7 +145,9 @@ export function FeedsScreen(_props: Props) {
     [search],
   )
   const onPressCompose = React.useCallback(() => {
+    console.log('onPressCompose called in Feeds screen')
     openComposer({})
+    console.log('openComposer called in Feeds screen')
   }, [openComposer])
   const onChangeQuery = React.useCallback(
     (text: string) => {

@@ -10,7 +10,7 @@ const express = require('express');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const { LambdaClient, InvokeCommand } = require('@aws-sdk/client-lambda');
-const crypto = require('crypto');
+const _crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -115,7 +115,7 @@ app.post('/check-duplicate', async (req, res) => {
     const lambdaResponse = await lambda.send(command);
     
     // Parse Lambda response
-    const responsePayload = JSON.parse(Buffer.from(lambdaResponse.Payload).toString());
+    const responsePayload = JSON.parse(global.Buffer.from(lambdaResponse.Payload).toString());
     
     console.log('✅ [presign-server] Lambda response:', {
       statusCode: responsePayload.statusCode,

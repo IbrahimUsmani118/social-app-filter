@@ -4,8 +4,8 @@
 // NO Firebase dependencies - runs entirely on AWS
 
 const AWS = require('aws-sdk');
-const sharp = require('sharp');
-const { generateRobustHash, compareHashes, binaryToHex } = require('./imageHash');
+const _sharp = require('sharp');
+const { generateRobustHash, compareHashes, _binaryToHex } = require('./imageHash');
 const { PutObjectCommand } = require('@aws-sdk/client-s3');
 
 // AWS Configuration with proper region
@@ -24,8 +24,8 @@ const s3 = new AWS.S3({
 
 // Configuration
 const IMAGES_TABLE = process.env.IMAGES_TABLE || 'ImageSignatures';
-const MAX_UPLOADS = parseInt(process.env.MAX_UPLOADS || '3');
-const SIMILARITY_THRESHOLD = parseInt(process.env.SIMILARITY_THRESHOLD || '25');
+const MAX_UPLOADS = parseInt(process.env.MAX_UPLOADS || '3', 10);
+const SIMILARITY_THRESHOLD = parseInt(process.env.SIMILARITY_THRESHOLD || '25', 10);
 const S3_BUCKET = process.env.S3_BUCKET || '';
 
 // ===========================
@@ -150,7 +150,7 @@ exports.handler = async (event) => {
         };
       }
       
-      imageBuffer = Buffer.from(body.imageData, 'base64');
+      imageBuffer = global.Buffer.from(body.imageData, 'base64');
       userId = body.userId || 'anonymous';
       fileName = body.fileName || body.filename || 'unnamed.jpg';
       fileHash = body.fileHash || body.imageHash || null; // Handle both field names

@@ -1,9 +1,9 @@
 // AWS Configuration and Utilities for Filter System
-import Constants from 'expo-constants';
+import _Constants from 'expo-constants';
 
 // Environment configuration helper
 const getEnv = (key, fallback = '') =>
-  process.env[key] || Constants.expoConfig?.extra?.[key] || fallback;
+  process.env[key] || _Constants.expoConfig?.extra?.[key] || fallback;
 
 // AWS Configuration
 const awsConfig = {
@@ -93,11 +93,11 @@ if (typeof global.Buffer === 'undefined') global.Buffer = Buffer;
 
 import { PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { PutItemCommand, GetItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
-import { CognitoIdentityProviderClient, InitiateAuthCommand, SignUpCommand } from '@aws-sdk/client-cognito-identity-provider';
-import { fromCognitoIdentityPool } from '@aws-sdk/credential-provider-cognito-identity';
-import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
+import { CognitoIdentityProviderClient as _CognitoIdentityProviderClient, InitiateAuthCommand as _InitiateAuthCommand, SignUpCommand as _SignUpCommand } from '@aws-sdk/client-cognito-identity-provider';
+import { fromCognitoIdentityPool as _fromCognitoIdentityPool } from '@aws-sdk/credential-provider-cognito-identity';
+import { marshall as _marshall, unmarshall as _unmarshall } from '@aws-sdk/util-dynamodb';
 import * as FileSystem from 'expo-file-system';
-import * as ImageManipulator from 'expo-image-manipulator';
+import * as _ImageManipulator from 'expo-image-manipulator';
 
 // Centralized API client with retry logic
 export const api = {
@@ -350,7 +350,7 @@ const getImageUploadCount = async (fileHash) => {
    });
 
 
-   const result = await dynamoDbClient.send(getItemCommand);
+   const result = await ddbClient.send(getItemCommand);
   
    if (!result.Item) {
      return 0;
@@ -398,7 +398,7 @@ const incrementImageUploadCount = async (fileHash, userId, userName, fileName) =
    });
 
 
-   await dynamoDbClient.send(putItemCommand);
+   await ddbClient.send(putItemCommand);
    console.log(`✅ DynamoDB updated: ${fileHash} count: ${newCount}`);
    return newCount;
  } catch (error) {
@@ -494,7 +494,7 @@ export const uploadImageHandler = async (imageFile, userId, metadata = {}) => {
    });
 
 
-   await dynamoDbClient.send(putItemCommand);
+   await ddbClient.send(putItemCommand);
 
 
    // Call image tagging API
@@ -558,7 +558,7 @@ export const getImageMetadata = async (contentHash) => {
    });
 
 
-   const result = await dynamoDbClient.send(getItemCommand);
+   const result = await ddbClient.send(getItemCommand);
   
    if (!result.Item) {
      return null;
@@ -593,7 +593,7 @@ export const getUserImages = async (userId, limit = 10) => {
    });
 
 
-   const result = await dynamoDbClient.send(queryCommand);
+   const result = await ddbClient.send(queryCommand);
   
    return result.Items ? result.Items.map(item => unmarshall(item)) : [];
  } catch (error) {
@@ -641,7 +641,7 @@ export const blockImage = async (contentHash, reason = 'Inappropriate content') 
    });
 
 
-   await dynamoDbClient.send(updateCommand);
+   await ddbClient.send(updateCommand);
 
 
    return {
@@ -793,9 +793,9 @@ export const uploadImageToS3 = async (fileUri, userId, fileHash, fileInfo) => {
    }
 
          // Use AWS API credentials
-      const uploadApiKey = api.uploadKey;
-      const checkDuplicateApiKey = api.checkDuplicateKey;
-      const blockApiKey = api.blockKey;
+      const _uploadApiKey = api.uploadKey;
+      const _checkDuplicateApiKey = api.checkDuplicateKey;
+      const _blockApiKey = api.blockKey;
       
       // Check file size first to avoid 413 errors
     const fileInfoData = await FileSystem.getInfoAsync(fileUri);

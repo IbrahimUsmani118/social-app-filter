@@ -3,7 +3,7 @@ import 'react-native-get-random-values';
 // ENV VARS NEEDED:
 // AWS_REGION, AWS_BUCKET, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
 // DYNAMODB_TABLE, DYNAMODB_REGION
-import Constants from 'expo-constants';
+import _Constants from 'expo-constants';
 import { GetItemCommand, UpdateItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { ddbClient, awsConfig } from '../utils/aws-simple.js';
 

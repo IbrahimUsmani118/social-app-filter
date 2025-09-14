@@ -369,24 +369,46 @@ export const ComposePost = ({
     }
   }, [thread, requireAltTextEnabled, _])
 
-  const canPost =
-    !missingAltError &&
-    thread.posts.every(
-      post =>
-        post.shortenedGraphemeLength <= MAX_GRAPHEME_LENGTH &&
-        !isEmptyPost(post) &&
-        !(
-          post.embed.media?.type === 'video' &&
-          post.embed.media.video.status === 'error'
-        ),
-    )
+  const canPost = useMemo(() => {
+    const result = !missingAltError &&
+      thread.posts.every(
+        post => {
+          const isValidLength = post.shortenedGraphemeLength <= MAX_GRAPHEME_LENGTH
+          const isNotEmpty = !isEmptyPost(post)
+          const hasNoVideoError = !(
+            post.embed.media?.type === 'video' &&
+            post.embed.media.video.status === 'error'
+          )
+          
+          console.log('Post validation:', {
+            postId: post.id,
+            isValidLength,
+            isNotEmpty,
+            hasNoVideoError,
+            shortenedGraphemeLength: post.shortenedGraphemeLength,
+            isEmptyPost: isEmptyPost(post),
+            mediaType: post.embed.media?.type,
+            videoStatus: post.embed.media?.type === 'video' ? post.embed.media.video.status : 'N/A'
+          })
+          
+          return isValidLength && isNotEmpty && hasNoVideoError
+        }
+      )
+    
+    console.log('canPost result:', { result, missingAltError })
+    return result
+  }, [missingAltError, thread.posts])
 
   const onPressPublish = React.useCallback(async () => {
+    console.log('onPressPublish called', { isPublishing, canPost, missingAltError })
+    
     if (isPublishing) {
+      console.log('Already publishing, returning')
       return
     }
 
     if (!canPost) {
+      console.log('Cannot post, returning', { missingAltError })
       return
     }
 
@@ -1476,17 +1498,19 @@ function useScrollTracker({
   const scrollViewHeight = useSharedValue(Infinity)
   const contentHeight = useSharedValue(0)
 
-  const hasScrolledToTop = useDerivedValue(() =>
-    withTiming(contentOffset.get() === 0 ? 1 : 0),
-  )
+  const hasScrolledToTop = useDerivedValue(() => {
+    'worklet'
+    return withTiming(contentOffset.value === 0 ? 1 : 0)
+  })
 
-  const hasScrolledToBottom = useDerivedValue(() =>
-    withTiming(
-      contentHeight.get() - contentOffset.get() - 5 <= scrollViewHeight.get()
+  const hasScrolledToBottom = useDerivedValue(() => {
+    'worklet'
+    return withTiming(
+      contentHeight.value - contentOffset.value - 5 <= scrollViewHeight.value
         ? 1
         : 0,
-    ),
-  )
+    )
+  })
 
   const showHideBottomBorder = useCallback(
     ({
@@ -1500,45 +1524,48 @@ function useScrollTracker({
     }) => {
       'worklet'
       if (typeof newContentHeight === 'number')
-        contentHeight.set(Math.floor(newContentHeight))
+        contentHeight.value = Math.floor(newContentHeight)
       if (typeof newContentOffset === 'number')
-        contentOffset.set(Math.floor(newContentOffset))
+        contentOffset.value = Math.floor(newContentOffset)
       if (typeof newScrollViewHeight === 'number')
-        scrollViewHeight.set(Math.floor(newScrollViewHeight))
+        scrollViewHeight.value = Math.floor(newScrollViewHeight)
     },
     [contentHeight, contentOffset, scrollViewHeight],
   )
 
   const scrollHandler = useAnimatedScrollHandler({
-    onScroll: event => {
+    onScroll: (event) => {
       'worklet'
-      showHideBottomBorder({
-        newContentOffset: event.contentOffset.y,
-        newContentHeight: event.contentSize.height,
-        newScrollViewHeight: event.layoutMeasurement.height,
-      })
+      // Inline the worklet logic instead of calling a function
+      if (typeof event.contentOffset.y === 'number')
+        contentOffset.value = Math.floor(event.contentOffset.y)
+      if (typeof event.contentSize.height === 'number')
+        contentHeight.value = Math.floor(event.contentSize.height)
+      if (typeof event.layoutMeasurement.height === 'number')
+        scrollViewHeight.value = Math.floor(event.layoutMeasurement.height)
     },
   })
 
   const onScrollViewContentSizeChangeUIThread = useCallback(
     (newContentHeight: number) => {
       'worklet'
-      const oldContentHeight = contentHeight.get()
+      const oldContentHeight = contentHeight.value
       let shouldScrollToBottom = false
       if (stickyBottom && newContentHeight > oldContentHeight) {
         const isFairlyCloseToBottom =
-          oldContentHeight - contentOffset.get() - 100 <= scrollViewHeight.get()
+          oldContentHeight - contentOffset.value - 100 <= scrollViewHeight.value
         if (isFairlyCloseToBottom) {
           shouldScrollToBottom = true
         }
       }
-      showHideBottomBorder({newContentHeight})
+      // Inline the worklet logic instead of calling a function
+      if (typeof newContentHeight === 'number')
+        contentHeight.value = Math.floor(newContentHeight)
       if (shouldScrollToBottom) {
         scrollTo(scrollViewRef, 0, newContentHeight, true)
       }
     },
     [
-      showHideBottomBorder,
       scrollViewRef,
       contentHeight,
       stickyBottom,
@@ -1564,20 +1591,22 @@ function useScrollTracker({
   )
 
   const topBarAnimatedStyle = useAnimatedStyle(() => {
+    'worklet'
     return {
       borderBottomWidth: StyleSheet.hairlineWidth,
       borderColor: interpolateColor(
-        hasScrolledToTop.get(),
+        hasScrolledToTop.value,
         [0, 1],
         [t.atoms.border_contrast_medium.borderColor, 'transparent'],
       ),
     }
   })
   const bottomBarAnimatedStyle = useAnimatedStyle(() => {
+    'worklet'
     return {
       borderTopWidth: StyleSheet.hairlineWidth,
       borderColor: interpolateColor(
-        hasScrolledToBottom.get(),
+        hasScrolledToBottom.value,
         [0, 1],
         [t.atoms.border_contrast_medium.borderColor, 'transparent'],
       ),
@@ -1809,6 +1838,7 @@ function VideoUploadToolbar({state}: {state: VideoState}) {
   let wheelProgress = shouldRotate ? 0.33 : progress
 
   const rotate = useDerivedValue(() => {
+    'worklet'
     if (shouldRotate) {
       return withRepeat(
         withTiming(360, {
@@ -1822,8 +1852,9 @@ function VideoUploadToolbar({state}: {state: VideoState}) {
   })
 
   const animatedStyle = useAnimatedStyle(() => {
+    'worklet'
     return {
-      transform: [{rotateZ: `${rotate.get()}deg`}],
+      transform: [{rotateZ: `${rotate.value}deg`}],
     }
   })
 

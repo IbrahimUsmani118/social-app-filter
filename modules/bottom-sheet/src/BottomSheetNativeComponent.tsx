@@ -28,7 +28,28 @@ const NativeView: React.ComponentType<
   }
 > = requireNativeViewManager('BottomSheet')
 
-const NativeModule = requireNativeModule('BottomSheet')
+let NativeModule: any
+try {
+  NativeModule = requireNativeModule('BottomSheet')
+} catch (error) {
+  console.warn('BottomSheet native module not available, using mock')
+  NativeModule = {
+    setEnablePanDownToClose: () => {},
+    setEnableContentPanningGesture: () => {},
+    setEnableHandlePanningGesture: () => {},
+    setSnapPoints: () => {},
+    setEnableDynamicSizing: () => {},
+    setAnimateOnMount: () => {},
+    setBackgroundStyle: () => {},
+    setCustomHandle: () => {},
+    setTopInset: () => {},
+    setEnableOverDrag: () => {},
+    setEnableDismissOnClose: () => {},
+    setKeyboardBehavior: () => {},
+    setKeyboardBlurBehavior: () => {},
+    setAndroidEnableSwipeToClose: () => {},
+  }
+}
 
 const isIOS15 =
   Platform.OS === 'ios' &&

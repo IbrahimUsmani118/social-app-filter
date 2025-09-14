@@ -3,7 +3,7 @@
 
 import {type PickerImage} from './picker.shared'
 import {logger} from '#/logger'
-import {msg} from '@lingui/macro'
+import {msg as _msg} from '@lingui/macro'
 import {type I18n} from '@lingui/core'
 
 // Import filter system utilities
