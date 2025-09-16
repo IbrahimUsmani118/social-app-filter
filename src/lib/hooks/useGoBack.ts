@@ -1,7 +1,7 @@
 import {StackActions, useNavigation} from '@react-navigation/native'
 
 import {type NavigationProp} from '#/lib/routes/types'
-import {router} from '#/routes'
+import {router} from 'expo-router'
 
 export function useGoBack(onGoBack?: () => unknown) {
   const navigation = useNavigation<NavigationProp>()
@@ -11,13 +11,8 @@ export function useGoBack(onGoBack?: () => unknown) {
       navigation.goBack()
     } else {
       navigation.navigate('HomeTab')
-      // Checking the state for routes ensures that web doesn't encounter errors while going back
-      if (navigation.getState()?.routes) {
-        navigation.dispatch(StackActions.push(...router.matchPath('/')))
-      } else {
-        navigation.navigate('HomeTab')
-        navigation.dispatch(StackActions.popToTop())
-      }
+      // Use expo-router to navigate to home
+      router.push('/')
     }
   }
 }

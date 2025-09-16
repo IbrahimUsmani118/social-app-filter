@@ -33,19 +33,30 @@ module.exports = function (_config) {
   return {
     expo: {
       version: VERSION,
-      name: 'Bluesky',
-      slug: 'bluesky',
-      scheme: 'bluesky',
-      owner: 'blueskysocial',
+      name: 'Kitab Social',
+      slug: 'kitab-social',
+      scheme: 'kitab',
+      owner: 'ibrahim',
       runtimeVersion: {
         policy: 'appVersion',
       },
       icon: './assets/app-icons/ios_icon_default_light.png',
       userInterfaceStyle: 'automatic',
       primaryColor: '#1083fe',
+      platforms: ['ios', 'android', 'web'],
+      orientation: 'portrait',
+      splash: {
+        image: './assets/splash.png',
+        resizeMode: 'cover',
+        backgroundColor: '#ffffff',
+        dark: {
+          image: './assets/splash-dark.png',
+          backgroundColor: '#001429',
+        },
+      },
       ios: {
         supportsTablet: false,
-        bundleIdentifier: 'xyz.blueskyweb.app',
+        bundleIdentifier: 'com.kitab.social',
         config: {
           usesNonExemptEncryption: false,
         },
@@ -149,7 +160,7 @@ module.exports = function (_config) {
           backgroundColor: '#1185FE',
         },
         googleServicesFile: './google-services.json',
-        package: 'xyz.blueskyweb.app',
+        package: 'com.kitab.social',
         intentFilters: [
           {
             action: 'VIEW',
@@ -170,6 +181,7 @@ module.exports = function (_config) {
       },
       web: {
         favicon: './assets/favicon.png',
+        bundler: 'metro',
       },
       updates: {
         url: 'https://updates.bsky.app/manifest',
@@ -187,13 +199,10 @@ module.exports = function (_config) {
         checkAutomatically: 'NEVER',
       },
       plugins: [
+        'expo-router',
         'expo-video',
         'expo-localization',
         'expo-web-browser',
-        [
-          'react-native-edge-to-edge',
-          {android: {enforceNavigationBarContrast: false}},
-        ],
         USE_SENTRY && [
           '@sentry/react-native/expo',
           {
@@ -214,6 +223,7 @@ module.exports = function (_config) {
               targetSdkVersion: 35,
               buildToolsVersion: '35.0.0',
               newArchEnabled: false,
+              enforceNavigationBarContrast: false,
             },
           },
         ],
@@ -225,7 +235,7 @@ module.exports = function (_config) {
             sounds: PLATFORM === 'ios' ? ['assets/dm.aiff'] : ['assets/dm.mp3'],
           },
         ],
-        'react-native-compressor',
+        // 'react-native-compressor', // Temporarily disabled - missing dependency
         [
           '@bitdrift/react-native',
           {
@@ -246,9 +256,7 @@ module.exports = function (_config) {
           'expo-font',
           {
             fonts: [
-              './assets/fonts/inter/InterVariable.woff2',
-              './assets/fonts/inter/InterVariable-Italic.woff2',
-              // Android only
+              // Only include fonts that actually exist
               './assets/fonts/inter/Inter-Regular.otf',
               './assets/fonts/inter/Inter-Italic.otf',
               './assets/fonts/inter/Inter-Medium.otf',
@@ -370,7 +378,7 @@ module.exports = function (_config) {
                 appExtensions: [
                   {
                     targetName: 'Share-with-Bluesky',
-                    bundleIdentifier: 'xyz.blueskyweb.app.Share-with-Bluesky',
+                    bundleIdentifier: 'com.kitab.social.Share-with-Bluesky',
                     entitlements: {
                       'com.apple.security.application-groups': [
                         'group.app.bsky',
@@ -379,7 +387,7 @@ module.exports = function (_config) {
                   },
                   {
                     targetName: 'BlueskyNSE',
-                    bundleIdentifier: 'xyz.blueskyweb.app.BlueskyNSE',
+                    bundleIdentifier: 'com.kitab.social.BlueskyNSE',
                     entitlements: {
                       'com.apple.security.application-groups': [
                         'group.app.bsky',
@@ -388,7 +396,7 @@ module.exports = function (_config) {
                   },
                   {
                     targetName: 'BlueskyClip',
-                    bundleIdentifier: 'xyz.blueskyweb.app.AppClip',
+                    bundleIdentifier: 'com.kitab.social.AppClip',
                   },
                 ],
               },

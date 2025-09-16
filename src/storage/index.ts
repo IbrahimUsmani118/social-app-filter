@@ -1,9 +1,37 @@
 import {useCallback, useEffect, useState} from 'react'
-import {MMKV} from 'react-native-mmkv'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import {type Account, type Device} from '#/storage/schema'
 
 export * from '#/storage/schema'
+
+/**
+ * Fallback storage for Expo Go compatibility
+ */
+class FallbackStorage {
+  private data: Map<string, string> = new Map()
+
+  set(key: string, value: string) {
+    this.data.set(key, value)
+  }
+
+  getString(key: string): string | undefined {
+    return this.data.get(key)
+  }
+
+  delete(key: string) {
+    this.data.delete(key)
+  }
+
+  clearAll() {
+    this.data.clear()
+  }
+
+  addOnValueChangedListener(callback: (key: string) => void) {
+    // No-op for fallback
+    return { remove: () => {} }
+  }
+}
 
 /**
  * Generic storage class. DO NOT use this directly. Instead, use the exported
@@ -11,10 +39,18 @@ export * from '#/storage/schema'
  */
 export class Storage<Scopes extends unknown[], Schema> {
   protected sep = ':'
-  protected store: MMKV
+  protected store: any
 
   constructor({id}: {id: string}) {
-    this.store = new MMKV({id})
+    try {
+      // Try to use MMKV if available
+      const {MMKV} = require('react-native-mmkv')
+      this.store = new MMKV({id})
+    } catch (error) {
+      // Fallback to AsyncStorage for Expo Go
+      console.warn('MMKV not available, using AsyncStorage fallback')
+      this.store = new FallbackStorage()
+    }
   }
 
   /**
@@ -82,7 +118,7 @@ export class Storage<Scopes extends unknown[], Schema> {
     scopes: [...Scopes, Key],
     callback: () => void,
   ) {
-    return this.store.addOnValueChangedListener(key => {
+    return this.store.addOnValueChangedListener((key: string) => {
       if (key === scopes.join(this.sep)) {
         callback()
       }

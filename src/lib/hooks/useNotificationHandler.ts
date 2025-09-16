@@ -18,7 +18,7 @@ import {useSession} from '#/state/session'
 import {useLoggedOutViewControls} from '#/state/shell/logged-out'
 import {useCloseAllActiveElements} from '#/state/util'
 import {resetToTab} from '#/Navigation'
-import {router} from '#/routes'
+import {router} from 'expo-router'
 
 export type NotificationReason =
   | 'like'
@@ -247,12 +247,10 @@ export function useNotificationsHandler() {
         if (url === '/notifications') {
           resetToTab('NotificationsTab')
         } else if (url) {
-          const [screen, params] = router.matchPath(url)
-          // @ts-expect-error router is not typed :/ -sfn
-          navigation.navigate('HomeTab', {screen, params})
+          // Use expo-router's push method directly
+          router.push(url)
           notyLogger.debug(`useNotificationsHandler: navigate`, {
-            screen,
-            params,
+            url,
           })
         }
       }

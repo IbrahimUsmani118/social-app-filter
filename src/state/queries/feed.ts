@@ -26,7 +26,7 @@ import {STALE} from '#/state/queries'
 import {RQKEY as listQueryKey} from '#/state/queries/list'
 import {usePreferencesQuery} from '#/state/queries/preferences'
 import {useAgent, useSession} from '#/state/session'
-import {router} from '#/routes'
+import {router} from 'expo-router'
 import {useModerationOpts} from '../preferences/moderation-opts'
 import {type FeedDescriptor} from './post-feed'
 import {precacheResolvedUri} from './resolve-uri'
@@ -98,8 +98,7 @@ export function hydrateFeedGenerator(
   const collection =
     urip.collection === 'app.bsky.feed.generator' ? 'feed' : 'lists'
   const href = `/profile/${urip.hostname}/${collection}/${urip.rkey}`
-  const route = router.matchPath(href)
-
+  // For Expo Router, we'll use the href directly
   return {
     type: 'feed',
     view,
@@ -108,8 +107,8 @@ export function hydrateFeedGenerator(
     cid: view.cid,
     route: {
       href,
-      name: route[0],
-      params: route[1],
+      name: 'ProfileFeed',
+      params: { handle: urip.hostname, feed: urip.rkey },
     },
     avatar: view.avatar,
     displayName: view.displayName
@@ -133,8 +132,7 @@ export function hydrateList(view: AppBskyGraphDefs.ListView): FeedSourceInfo {
   const collection =
     urip.collection === 'app.bsky.feed.generator' ? 'feed' : 'lists'
   const href = `/profile/${urip.hostname}/${collection}/${urip.rkey}`
-  const route = router.matchPath(href)
-
+  // For Expo Router, we'll use the href directly
   return {
     type: 'list',
     view,
@@ -142,8 +140,8 @@ export function hydrateList(view: AppBskyGraphDefs.ListView): FeedSourceInfo {
     feedDescriptor: `list|${view.uri}`,
     route: {
       href,
-      name: route[0],
-      params: route[1],
+      name: 'ProfileList',
+      params: { handle: urip.hostname, list: urip.rkey },
     },
     cid: view.cid,
     avatar: view.avatar,

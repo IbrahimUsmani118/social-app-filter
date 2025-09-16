@@ -2,7 +2,7 @@
 import {useCallback} from 'react'
 import {Keyboard} from 'react-native'
 import {type ImagePickerAsset} from 'expo-image-picker'
-import {msg, plural} from '@lingui/macro'
+import {msg} from '@lingui/macro'
 import {useLingui} from '@lingui/react'
 
 import {VIDEO_MAX_DURATION_MS, VIDEO_MAX_SIZE} from '#/lib/constants'
@@ -11,8 +11,7 @@ import {
   useVideoLibraryPermission,
 } from '#/lib/hooks/usePermissions'
 import {openUnifiedPicker} from '#/lib/media/picker'
-import {extractDataUriMime} from '#/lib/media/util'
-import {isNative, isWeb} from '#/platform/detection'
+import {isNative} from '#/platform/detection'
 import {MAX_IMAGES} from '#/view/com/composer/state/composer'
 import {atoms as a, useTheme} from '#/alf'
 import {Button, ButtonIcon, ButtonText} from '#/components/Button'

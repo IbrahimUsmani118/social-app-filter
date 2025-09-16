@@ -122,7 +122,8 @@ async function getPushToken() {
  * @see https://github.com/bluesky-social/social-app/pull/4467
  */
 export function useGetAndRegisterPushToken() {
-  const {isAgeRestricted} = useAgeAssuranceContext()
+  const ageAssuranceContext = useAgeAssuranceContext()
+  const isAgeRestricted = ageAssuranceContext?.isAgeRestricted ?? false
   const registerPushToken = useRegisterPushToken()
   return useCallback(
     async ({
@@ -170,15 +171,16 @@ export function useNotificationsRegistration() {
   const {currentAccount} = useSession()
   const registerPushToken = useRegisterPushToken()
   const getAndRegisterPushToken = useGetAndRegisterPushToken()
-  const {isReady: isAgeRestrictionReady, isAgeRestricted} =
-    useAgeAssuranceContext()
+  const ageAssuranceContext = useAgeAssuranceContext()
+  const isReady = ageAssuranceContext?.isReady ?? false
+  const isAgeRestricted = ageAssuranceContext?.isAgeRestricted ?? false
 
   useEffect(() => {
     /**
      * We want this to init right away _after_ we have a logged in user, and
      * _after_ we've loaded their age assurance state.
      */
-    if (!currentAccount || !isAgeRestrictionReady) return
+    if (!currentAccount || !isReady) return
 
     notyLogger.debug(`useNotificationsRegistration`)
 
@@ -214,7 +216,7 @@ export function useNotificationsRegistration() {
     currentAccount,
     getAndRegisterPushToken,
     registerPushToken,
-    isAgeRestrictionReady,
+    isReady,
     isAgeRestricted,
   ])
 }

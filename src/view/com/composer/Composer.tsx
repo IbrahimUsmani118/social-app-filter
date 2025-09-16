@@ -579,6 +579,7 @@ export const ComposePost = ({
     thread,
     canPost,
     isPublishing,
+    missingAltError,
     langPrefs.postLanguage,
     onClose,
     onPost,

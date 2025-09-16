@@ -16,6 +16,7 @@ module.exports = function (api) {
       ],
     ],
     plugins: [
+      // 'expo-router/babel', // Deprecated in SDK 50, using babel-preset-expo instead
       'macros',
       ['babel-plugin-react-compiler', {target: '19'}],
       [
@@ -41,7 +42,6 @@ module.exports = function (api) {
           },
         },
       ],
-      'react-native-worklets/plugin', // NOTE: this plugin MUST be last
     ],
     env: {
       production: {

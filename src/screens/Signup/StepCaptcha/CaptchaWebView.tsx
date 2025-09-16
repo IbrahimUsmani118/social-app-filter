@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useRef} from 'react'
-import {WebView, type WebViewNavigation} from 'react-native-webview'
+import {WebView, type WebViewNavigation} from 'react-native-web-webview'
 import {type ShouldStartLoadRequest} from 'react-native-webview/lib/WebViewTypes'
 
 import {type SignupState} from '#/screens/Signup/state'

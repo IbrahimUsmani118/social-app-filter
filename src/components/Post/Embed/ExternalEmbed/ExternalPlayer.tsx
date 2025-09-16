@@ -14,7 +14,7 @@ import Animated, {
   useFrameCallback,
 } from 'react-native-reanimated'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import {WebView} from 'react-native-webview'
+import {WebView} from 'react-native-web-webview'
 import {Image} from 'expo-image'
 import {type AppBskyEmbedExternal} from '@atproto/api'
 import {msg} from '@lingui/macro'

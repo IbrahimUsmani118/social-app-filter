@@ -385,6 +385,13 @@ export async function dynamicActivate(locale: AppLanguage) {
 export function useLocaleLanguage() {
   const {appLanguage} = useLanguagePrefs()
   useEffect(() => {
-    dynamicActivate(sanitizeAppLanguageSetting(appLanguage))
+    const activateI18n = async () => {
+      try {
+        await dynamicActivate(sanitizeAppLanguageSetting(appLanguage))
+      } catch (error) {
+        console.warn('Failed to activate i18n:', error)
+      }
+    }
+    activateI18n()
   }, [appLanguage])
 }

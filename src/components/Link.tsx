@@ -24,7 +24,7 @@ import {atoms as a, flatten, type TextStyleProp, useTheme, web} from '#/alf'
 import {Button, type ButtonProps} from '#/components/Button'
 import {useInteractionState} from '#/components/hooks/useInteractionState'
 import {Text, type TextProps} from '#/components/Typography'
-import {router} from '#/routes'
+import {router} from 'expo-router'
 import {useGlobalDialogsControlContext} from './dialogs/Context'
 
 /**
